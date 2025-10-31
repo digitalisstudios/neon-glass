@@ -15,6 +15,18 @@ Neon Glass is an aggressively styled Bootstrap theme designed as a drop-in overl
 - **Fully Responsive** - Optimized for all screen sizes with mobile-first design
 - **Dark UI Optimized** - Built specifically for dark-themed applications
 
+
+## Demo
+
+Check out the full demo with all components here https://codepen.io/digitalisstudios/full/VYeEZbe
+
+### What it looks like
+
+Here is a screenshot of a site using this theme a https://insaans.com
+
+![Neon Glass In Action](src/images/neon-glass-preview.png)
+
+
 ## Installation
 
 ### Basic Setup
