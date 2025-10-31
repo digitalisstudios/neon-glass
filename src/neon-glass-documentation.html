@@ -1,0 +1,1945 @@
+<!DOCTYPE html>
+<html data-bs-theme="dark" lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta content="width=device-width, initial-scale=1.0" name="viewport" />
+		<title> Neon Glass - Cyberpunk Responsive Theme </title>
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet" />
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet" />
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+		<link href="css/bootstrap-neon.css" rel="stylesheet">
+		<link href="css/documentation.css" rel="stylesheet">
+		<style>
+@keyframes fadeIn {
+	0% {
+	opacity: 0;
+  }
+  100% {
+	opacity: 1;
+  }
+}
+@keyframes play {
+  0% {
+    transform: rotateX(45deg) translateY(-50%);
+  }
+  100% {
+    transform: rotateX(45deg) translateY(0);
+  }
+}
+
+@keyframes main-title-skew {
+  0% {
+    transform: scaleY(10) scaleX(1.05) skewX(-70deg);
+  }
+  50% {
+    transform: scaleY(10) scaleX(1.05) skewX(70deg);
+  }
+  100% {
+    transform: scaleY(10) scaleX(1.05) skewX(-70deg);
+  }
+
+}
+
+@keyframes main-title-streak-in {
+  0% {
+    transform: scaleY(0) scaleX(0) skewX(-70deg);
+    opacity: 0;
+  }
+  100% {
+    transform: scaleY(10) scaleX(1.05) skewX(-70deg);
+    opacity: 0.3;
+  }
+
+}
+
+#main-title::before {
+	content: attr(data-content);
+    position: absolute;
+    font-size: inherit;
+    font-weight: inherit;
+    letter-spacing: inherit;
+    color: var(--neon-cyan);
+    /* filter: blur(15px); */
+    transform: scaleY(0) scaleX(1.05) skewX(-70deg);
+    /* mix-blend-mode: overlay; */
+   
+    opacity: 0;
+    mix-blend-mode: hard-light;
+    mask-image: linear-gradient(359deg, transparent 71%, #fff 74%, transparent 78%), linear-gradient(90deg, #fff 0%, transparent 5%, #fff 56%);
+    mask-size: 200% 200%;
+    mask-composite: subtract;
+    filter: blur(9px);
+    animation-delay: 10s;
+    animation: fadeIn 2s forwards, main-title-streak-in 20s forwards, main-title-skew 150s infinite ease;
+
+}
+
+	#splash-subline {
+		opacity: 0;
+		delay: 6s;
+		animation: fadeIn 3s forwards;
+	}
+
+	:root {
+  --sqrt3: 1.73205080757;                      /* Square root of 3 */
+  --time: 11;                                  /* Duration of animation  */
+  --gap: 1;                                    /* Horizontal gap between hexagons */
+  --radius: 3;                                 /* Radius of inscribed circle */
+  --Gap: var(--gap) / 2 * var(--sqrt3);        /* Vertical gap between hexagons */
+  --Radius: 2 / var(--sqrt3) * var(--radius);  /* Radius of circumcircle */
+}
+
+.hex-bg {
+	  bottom: 0;
+  height: 60vh;
+  left: 0%;
+  width: 65%;
+  width: 100%;
+  overflow: hidden;
+  position: fixed;
+  right: 0;
+  z-index: -1;
+}
+
+@keyframes odd-animation {
+  0%   { transform: translate(calc( 0.5 * var(--offset-x) ), calc( 0.5 * var(--offset-y) )) scale(0) }
+  33%  { transform: translate(calc(   1 * var(--offset-x) ), calc(   1 * var(--offset-y) )) scale(1) }
+  66%  { transform: translate(calc(   2 * var(--offset-x) ), calc(   2 * var(--offset-y) )) scale(1) }
+  100% { transform: translate(calc(   3 * var(--offset-x) ), calc(   3 * var(--offset-y) )) scale(0) }
+}
+
+@keyframes even-animation {
+  50%  { transform: translate(calc( 1 * var(--offset-x) ), calc( 1 * var(--offset-y) )) scale(1) }
+  100% { transform: translate(calc( 2 * var(--offset-x) ), calc( 2 * var(--offset-y) )) scale(0) }
+}
+
+body {
+  align-items: center;
+  background-color: black;
+  display: flex;
+  /*height: 100vh;*/
+  justify-content: center;
+  /*overflow: hidden;*/
+  margin: 0;
+}
+
+.hex {
+  color: rgba(from var(--neon-cyan) r g b / 0.15);
+  filter: drop-shadow(0 0 6px rgba(from var(--neon-cyan) r g b / 0.25));
+  display: flex;
+  font-size: 3vmin;
+  height: calc(2em * var(--Radius));
+  width: calc(2em * var(--radius));
+  pointer-events: none;
+}
+
+.hex::before {
+  /*border: calc(0.5em * var(--Radius)) solid transparent;*/
+  border: calc(0.5em * var(--Radius)) solid transparent;
+  border-left: 0;
+  border-right: calc(1em * var(--radius)) solid currentColor;
+  content: "";
+  height: var(--Radius);
+}
+
+.hex::after  {
+  border: calc(0.5em * var(--Radius)) solid transparent;
+  border-left: calc(1em * var(--radius)) solid currentColor;
+  border-right: 0;
+  content: "";
+  height: var(--Radius);
+}
+
+
+.odd,
+.even {
+  --global-offset-x: calc( 0.5em * var(--gap) + var(--radius) * 1em);
+  --global-offset-y: calc( 1.5em * var(--Radius) + var(--Gap) * 1em);
+  animation: infinite cubic-bezier(.21, .61, .01, .89);
+  position: absolute;
+  transform: translate(0, 0) scale(0);  
+}
+
+.odd {
+  animation-duration: 11s;
+}
+.even {
+  animation-duration: 7.333333333s;
+}
+
+.hex.first {
+  animation-delay: -6.2857142857s;
+}
+.hex.second {
+  animation-delay: -2.619047619s;
+}
+.hex.third {
+  animation-delay: 1.0476190476s;
+}
+
+@supports (animation-delay: calc(1 * 1s)) and (animation-duration: calc(1 * 1s)) {
+  .odd {
+    animation-duration: calc(var(--time) * 1s);
+  }
+  .even {
+    animation-duration: calc( var(--time) * 2 / 3 * 1s);
+  }
+  
+  .hex.first {
+    animation-delay: calc( var(--time) / -1.75 * 1s );
+  }
+  .hex.second {
+    animation-delay: calc( var(--time) * 1.25 / -5.25 * 1s );
+  }
+  .hex.third {
+    animation-delay: calc( var(--time) * -0.25 / -2.625 * 1s );
+  }
+}
+
+.hex.one {
+  --offset-x: calc( var(--global-offset-x) * 1 );
+  --offset-y: calc( var(--global-offset-y) * -1 );
+  animation-name: odd-animation;
+  bottom: 0;
+  left: 0;
+}
+.hex.two {
+  --offset-x: calc( var(--global-offset-x) * 1.5 );
+  --offset-y: calc( var(--global-offset-y) * -0.5 );
+  animation-name: even-animation;
+  bottom: calc( var(--global-offset-y) * 0.5 );
+  left: calc( var(--global-offset-x) * 1.5 );
+}
+.hex.three {
+  --offset-x: calc( var(--global-offset-x) * 2 );
+  --offset-y: calc( var(--global-offset-y) * 0 );
+  animation-name: odd-animation;
+  bottom: 0;
+  right: 0;
+}
+.hex.four {
+  --offset-x: calc( var(--global-offset-x) * 1.5 );
+  --offset-y: calc( var(--global-offset-y) * 0.5 );
+  animation-name: even-animation;
+  top: calc( var(--global-offset-y) * 0.5 );
+  left: calc( var(--global-offset-x) * 1.5 );
+}
+.hex.five {
+  --offset-x: calc( var(--global-offset-x) * 1 );
+  --offset-y: calc( var(--global-offset-y) * 1 );
+  animation-name: odd-animation;
+  top: 0;
+  left: 0;
+}
+.hex.six {
+  --offset-x: calc( var(--global-offset-x) * 0 );
+  --offset-y: calc( var(--global-offset-y) * 1 );
+  animation-name: even-animation;
+  top: calc( var(--global-offset-y) * 1 );
+  left: 0;
+}
+.hex.seven {
+  --offset-x: calc( var(--global-offset-x) * -1 );
+  --offset-y: calc( var(--global-offset-y) * 1 );
+  animation-name: odd-animation;
+  top: 0;
+  right: 0;
+}
+.hex.eight {
+  --offset-x: calc( var(--global-offset-x) * -1.5 );
+  --offset-y: calc( var(--global-offset-y) * 0.5 );
+  animation-name: even-animation;
+  top: calc( var(--global-offset-y) * 0.5 );
+  right: calc( var(--global-offset-x) * 1.5 );
+}
+.hex.nine {
+  --offset-x: calc( var(--global-offset-x) * -2 );
+  --offset-y: calc( var(--global-offset-y) * 0 );
+  animation-name: odd-animation;
+  top: 0;
+  right: 0;
+}
+.hex.ten {
+  --offset-x: calc( var(--global-offset-x) * -1.5 );
+  --offset-y: calc( var(--global-offset-y) * -0.5 );
+  animation-name: even-animation;
+  bottom: calc( var(--global-offset-y) * 0.5 );
+  right: calc( var(--global-offset-x) * 1.5 );
+}
+.hex.eleven {
+  --offset-x: calc( var(--global-offset-x) * -1 );
+  --offset-y: calc( var(--global-offset-y) * -1 );
+  animation-name: odd-animation;
+  bottom: 0;
+  right: 0;
+}
+.hex.twelve {
+  --offset-x: calc( var(--global-offset-x) * 0 );
+  --offset-y: calc( var(--global-offset-y) * -1 );
+  animation-name: even-animation;
+  bottom: calc( var(--global-offset-y) * 1 );
+  left: 0;
+}
+
+a-hole {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+a-hole:before {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 2;
+  display: block;
+  width: 150%;
+  height: 140%;
+  background: radial-gradient(ellipse at 50% 55%, transparent 10%, black 50%);
+  transform: translate3d(-50%, -50%, 0);
+  content: "";
+}
+a-hole:after {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 5;
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(ellipse at 50% 75%, #a900ff 20%, transparent 75%);
+  mix-blend-mode: overlay;
+  transform: translate3d(-50%, -50%, 0);
+  content: "";
+}
+@-webkit-keyframes aura-glow {
+  0% {
+    background-position: 0 100%;
+  }
+  100% {
+    background-position: 0 300%;
+  }
+}
+@keyframes aura-glow {
+  0% {
+    background-position: 0 100%;
+  }
+  100% {
+    background-position: 0 300%;
+  }
+}
+a-hole .aura {
+  position: absolute;
+  top: -71.5%;
+  left: 50%;
+  z-index: 3;
+  width: 30%;
+  height: 140%;
+  background: linear-gradient(20deg, #00f8f1, #ffbd1e20 16.5%, #fe848f 33%, #fe848f20 49.5%, #00f8f1 66%, #00f8f160 85.5%, #ffbd1e 100%) 0 100%/100% 200%;
+  border-radius: 0 0 100% 100%;
+  filter: blur(50px);
+  mix-blend-mode: plus-lighter;
+  opacity: 0.75;
+  transform: translate3d(-50%, 0, 0);
+  -webkit-animation: aura-glow 5s infinite linear;
+          animation: aura-glow 5s infinite linear;
+}
+a-hole .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(transparent, transparent 1px, white 1px, white 2px);
+  mix-blend-mode: overlay;
+  opacity: 0.5;
+}
+a-hole canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+		</style>
+	
+	</head>
+	<body style="height: 100%; display: block;">
+		<div id="star-container" style="height:40%; top:0; z-index: -1;">
+			<div id="stars"></div>
+			<div id="stars2"></div>
+			<div id="stars3"></div>
+			<div class="neon-accent-line position-absolute bottom-0 w-100">
+				<div class="container-xxxl" id="bg-cutout"></div>
+			</div>
+		</div>
+		<div class='aurora-wrap' style="position:fixed; top:0; width: 100vw; height: 200px; z-index: -1;">
+			<div class="rainbow"></div>
+			<div class="rainbow"></div>
+			<div class="rainbow"></div>
+			<div class="rainbow"></div>
+			<div class="rainbow"></div>
+			<div class="rainbow"></div>
+			<div class="rainbow"></div>
+			<div class="rainbow"></div>
+			<div class="rainbow"></div>
+			<div class="rainbow"></div>
+			<div class="rainbow"></div>
+			<div class="rainbow"></div>
+			<div class="rainbow"></div>
+			<div class="rainbow"></div>
+			<div class="rainbow"></div>
+			<div class="rainbow"></div>
+			<div class="rainbow"></div>
+			<div class="rainbow"></div>
+			<div class="rainbow"></div>
+			<div class="rainbow"></div>
+			<div class="rainbow"></div>
+			<div class="rainbow"></div>
+			<div class="rainbow"></div>
+			<div class="rainbow"></div>
+			<div class="rainbow"></div>
+		</div>
+
+
+<!--
+		<div class="hex-bg">
+			<div class="hex center">
+			  <div class="hex odd first one"></div>
+			  <div class="hex odd first three"></div>
+			  <div class="hex odd first five"></div>
+			  <div class="hex odd first seven"></div>
+			  <div class="hex odd first nine"></div>
+			  <div class="hex odd first eleven"></div>
+			  <div class="hex odd second one"></div>
+			  <div class="hex odd second three"></div>
+			  <div class="hex odd second five"></div>
+			  <div class="hex odd second seven"></div>
+			  <div class="hex odd second nine"></div>
+			  <div class="hex odd second eleven"></div>
+			  <div class="hex odd third one"></div>
+			  <div class="hex odd third three"></div>
+			  <div class="hex odd third five"></div>
+			  <div class="hex odd third seven"></div>
+			  <div class="hex odd third nine"></div>
+			  <div class="hex odd third eleven"></div>
+			  <div class="hex even first two"></div>
+			  <div class="hex even first four"></div>
+			  <div class="hex even first six"></div>
+			  <div class="hex even first eight"></div>
+			  <div class="hex even first ten"></div>
+			  <div class="hex even first twelve"></div>
+			  <div class="hex even second two"></div>
+			  <div class="hex even second four"></div>
+			  <div class="hex even second six"></div>
+			  <div class="hex even second eight"></div>
+			  <div class="hex even second ten"></div>
+			  <div class="hex even second twelve"></div>
+			</div>
+		</div>
+		
+		<div class="animated-grid">
+		<div class="grid-fade"></div>
+		<div class="grid-lines"></div>
+		</div>
+		-->
+		<nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+			<div class="container-xxxl">
+				<a class="navbar-brand fw-bold text-neon-font-primary text-neon-cyan-glow" href="#">
+					<i class="fas fa-bolt me-2"></i> NEON GLASS </a>
+				<button class="navbar-toggler" data-bs-target="#navbarNav" data-bs-toggle="collapse" type="button">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<!--
+				<div class="collapse navbar-collapse" id="navbarNav">
+					<ul class="navbar-nav ms-auto">
+						<li class="nav-item">
+							<a class="nav-link" href="#installation"> Installation </a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#components"> Components </a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#utilities"> Utilities </a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#advanced"> Advanced </a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#customization"> Customization </a>
+						</li>
+					</ul>
+				</div>
+				-->
+			</div>
+		</nav>
+		<div class="container-xxxl my-5">
+			<!-- Hero Section -->
+
+			<h1 class="display-1 fw-bold text-neon-font-primary text-neon-cyan-glow text-center" id="main-title" data-content="NEON GLASS" style="font-size: 9rem; line-height: 20rem; margin-bottom: -5rem; ">N<span class="anim-flicker">eo</span>n <span class="buzz">Glass</span>
+			</h1>
+			<p class="lead mb-4 fs-4 text-center p-5 pt-0 text-neon-blue-adv turn-on align-items-center" id="splash-subline">
+				<span class="d-inline-flex"> OBSESSIVELY DETAILED </span>
+				<span class="text-neon-magenta-title fs-1 d-inline-block position-absolute px-3  " style="margin-top:-10px; margin-left:-3px "> &amp; </span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="d-inline-flex"> DELISCIOUSLY IMPRACTICAL </span>
+			</p>
+			<div class="row">
+				<div class="col-lg-3">
+					<!-- Table of Contents -->
+					<div class="toc card p-0">
+						<div class="neon-accent-line"></div>
+						<div class="card-header">
+							<h5 class="card-title mb-0 pt-4 pb-2">
+								<i class="fas fa-list me-2"></i> NAVIGATION
+							</h5>
+						</div>
+						<div class="card-body">
+							<ul>
+								<li>
+									<a href="#features"> Features </a>
+								</li>
+								<li>
+									<a href="#installation"> Installation </a>
+									<ul>
+										<li>
+											<a href="#basic-setup"> Basic Setup </a>
+										</li>
+										<li>
+											<a href="#html-template"> HTML Template </a>
+										</li>
+									</ul>
+								</li>
+								<li>
+									<a href="#components"> Components </a>
+									<ul>
+										<li>
+											<a href="#cards"> Cards </a>
+										</li>
+										<li>
+											<a href="#buttons"> Buttons </a>
+										</li>
+										<li>
+											<a href="#forms"> Forms </a>
+										</li>
+										<li>
+											<a href="#badges"> Badges &amp; Chips </a>
+										</li>
+										<li>
+											<a href="#alerts"> Alerts </a>
+										</li>
+										<li>
+											<a href="#tabs"> Tabs </a>
+										</li>
+										<li>
+											<a href="#toasts"> Toasts </a>
+										</li>
+										<li>
+											<a href="#tables"> Tables </a>
+										</li>
+										<li>
+											<a href="#pagination"> Pagination </a>
+										</li>
+										<li>
+											<a href="#progress"> Progress Bars </a>
+										</li>
+										<li>
+											<a href="#modals"> Modals </a>
+										</li>
+									</ul>
+								</li>
+								<li>
+									<a href="#utilities"> Utility Classes </a>
+								</li>
+								<li>
+									<a href="#advanced"> Advanced Features </a>
+									<ul>
+										<li>
+											<a href="#lens-effects"> Lens Distortion </a>
+										</li>
+										<li>
+											<a href="#dashboard"> Dashboard Examples </a>
+										</li>
+									</ul>
+								</li>
+								<li>
+									<a href="#customization"> Customization </a>
+								</li>
+								<li>
+									<a href="#browser-support"> Browser Support </a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-9">
+					<div class="container-xxxl mb-5">
+						<!-- Introduction -->
+						<section class="mb-5" id="features">
+							<h1 class="display-4">Welcome </h1>
+							<div class="card bg-glass">
+								<div class="neon-accent-line"></div>
+								<div class="card-body">
+									<p>This is an agressively styled bootstrap theme with the intention of being a drop in overlay. <br>
+										All components and utilities are pure CSS, except the custom glass reflections addon documented at the end of this page.<br>
+										This theme is designed for dark UIs and is fully responsive.
+									</p>
+									<p>Powered by pure spite Brandon Moore 2025</p>
+									
+								</div>
+							</div>
+						</section>
+						<!-- Features -->
+						<section class="mb-5" id="features">
+							<h1 class="display-4"> Features </h1>
+							<div class="card bg-glass">
+								<div class="neon-accent-line"></div>
+								<div class="card-body">
+									<ul>
+										<li> Glassmorphism cards with animated neon accents. </li>
+										<li> Gradient buttons with glossy borders and hover sheen. </li>
+										<li> Chips, badges, and progress bars with glow effects. </li>
+										<li> Utility classes for backgrounds, glows, and text colors. </li>
+										<li> Advanced neon text effects and lens distortion demo. </li>
+										<li> Responsive by default; optimized for dark UI. </li>
+									</ul>
+									
+									
+								</div>
+							</div>
+						</section>
+						<!-- Installation -->
+						<section class="mb-5" id="installation">
+							<h1 class="display-4"> Installation </h1>
+							<div class="card bg-glass">
+								<div class="card-body">
+									<h5 id="basic-setup" class="mt-3"> Basic Setup </h5>
+									<p class="mb-3">Add the Neon Glass stylesheet to your existing Bootstrap project. Include it after Bootstrap's CSS to override default styles.</p>
+
+									<h6 class="mb-2">CDN Links</h6>
+									<pre class="bg-dark p-3 rounded"><code class="language-html">&lt;!-- Bootstrap 5 --&gt;
+&lt;link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"&gt;
+
+&lt;!-- Neon Glass Theme --&gt;
+&lt;link href="css/bootstrap-neon.css" rel="stylesheet"&gt;</code></pre>
+
+									<h6 class="mb-2 mt-4">Optional Dependencies</h6>
+									<p class="mb-2">For advanced features like lens effects and icons:</p>
+									<pre class="bg-dark p-3 rounded"><code class="language-html">&lt;!-- Font Awesome Icons --&gt;
+&lt;link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet"&gt;
+
+&lt;!-- html2canvas-pro (for lens distortion effects) --&gt;
+&lt;script src="https://cdn.jsdelivr.net/npm/html2canvas-pro@1.5.11/dist/html2canvas-pro.min.js"&gt;&lt;/script&gt;
+&lt;script src="js/lens.js"&gt;&lt;/script&gt;</code></pre>
+
+									<h6 class="mb-2 mt-4">JavaScript</h6>
+									<pre class="bg-dark p-3 rounded"><code class="language-html">&lt;!-- Bootstrap Bundle (includes Popper) --&gt;
+&lt;script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"&gt;&lt;/script&gt;</code></pre>
+
+									<h5 id="html-template" class="mt-5"> HTML Template </h5>
+									<p class="mb-3">Complete starter template with all required dependencies and dark theme configuration.</p>
+
+									<pre class="bg-dark p-3 rounded"><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html data-bs-theme="dark" lang="en"&gt;
+&lt;head&gt;
+  &lt;meta charset="utf-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+  &lt;title&gt;Neon Glass App&lt;/title&gt;
+
+  &lt;!-- Bootstrap CSS --&gt;
+  &lt;link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"&gt;
+
+  &lt;!-- Font Awesome Icons --&gt;
+  &lt;link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet"&gt;
+
+  &lt;!-- Neon Glass Theme --&gt;
+  &lt;link href="css/bootstrap-neon.css" rel="stylesheet"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;!-- Your content here --&gt;
+  &lt;div class="container my-5"&gt;
+    &lt;div class="card"&gt;
+      &lt;div class="neon-accent-line"&gt;&lt;/div&gt;
+      &lt;div class="card-header"&gt;
+        &lt;h5 class="card-title mb-0"&gt;
+          &lt;i class="fas fa-bolt me-2"&gt;&lt;/i&gt;
+          Welcome to Neon Glass
+        &lt;/h5&gt;
+      &lt;/div&gt;
+      &lt;div class="card-body"&gt;
+        &lt;p&gt;Your cyberpunk-themed application starts here.&lt;/p&gt;
+        &lt;button class="btn btn-primary"&gt;Get Started&lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Bootstrap Bundle JS --&gt;
+  &lt;script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"&gt;&lt;/script&gt;
+
+  &lt;!-- Optional: Lens Effects --&gt;
+  &lt;script src="https://cdn.jsdelivr.net/npm/html2canvas-pro@1.5.11/dist/html2canvas-pro.min.js"&gt;&lt;/script&gt;
+  &lt;script src="js/lens.js"&gt;&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+									<div class="alert alert-neon alert-info mt-4" role="alert">
+										<i class="fas fa-lightbulb me-2"></i>
+										<strong>Pro Tip:</strong> Set <code>data-bs-theme="dark"</code> on the <code>&lt;html&gt;</code> tag to enable Bootstrap's dark mode and ensure optimal appearance with the Neon Glass theme.
+									</div>
+								</div>
+							</div>
+						</section>
+						<!-- Components -->
+						<section class="mb-4" id="components">
+							
+							<!-- components continues; subsections nested below -->
+							<!-- Cards Section -->
+							<section class="mb-5" id="cards">
+								<h1 class="display-4">Cards </h1>
+								<div class="card bg-glass">
+									<div class="neon-accent-line"></div>
+									<div class="card-body">
+										<div class="card mb-5">
+											<div class="card-header">
+												<h5 class="card-title my-0">Basic Card </h5>
+											</div>
+											<div class="card-body">
+												<p> This card has glassmorphism effects and ambient neon glows. </p>
+												<button class="btn btn-primary"> Action </button>
+											</div>
+										</div>
+										<div class="card card-hero rounded-4 mb-5">
+											<div class="neon-accent-line"></div>
+											<div class="card-header">
+												<h5 class="card-title my-0">Hero Card </h5>
+											</div>
+											<div class="card-body">
+												<p> Hover for enhanced glow and sheen animation. </p>
+												<button class="btn btn-primary"> Action Button </button>
+											</div>
+										</div>
+										<div class="card card-solid mb-5">
+											<div class="card-header">
+												<h5 class="card-title my-0"> Solid Card </h5>
+											</div>
+											<div class="card-body">
+												<p> Use <code> card-solid </code> when you want an opaque background instead of glass. </p>
+												<button class="btn btn-secondary"> Action </button>
+											</div>
+										</div>
+										
+									</div>
+								</div>
+								<!-- end buttons section -->
+								<!-- Forms Section (will appear after Buttons) -->
+								<!-- Buttons Section -->
+								<section class="my-5" id="buttons">
+									<h1 class="display-4"> Buttons</h1>
+									<div class="card bg-glass">
+										<div class="neon-accent-line"></div>
+										<div class="card-body">
+											<h5>Contextual</h5>
+											<div class="d-flex flex-wrap gap-3 mb-3">
+												<button class="btn btn-primary"> Primary </button>
+												<button class="btn btn-success"> Success </button>
+												<button class="btn btn-danger"> Danger </button>
+												<button class="btn btn-warning"> Warning </button>
+												<button class="btn btn-info"> Info </button>
+												<button class="btn btn-secondary"> Secondary </button>
+											</div>
+											<h5 class="mt-5 mb-0">Sizes </h5>
+											<div class="d-flex flex-wrap gap-3 align-items-center">
+												<button class="btn btn-primary btn-sm"> Small </button>
+												<button class="btn btn-primary"> Default </button>
+												<button class="btn btn-primary btn-lg"> Large </button>
+											</div>
+											
+										</div>
+									</div>
+								</section>
+								
+								<!-- Insert Forms here to match TOC order -->
+              <section class="my-5" id="forms">
+                <h1 class="display-4">Forms</h1>
+									<div class="card bg-glass">
+										<div class="neon-accent-line"></div>
+										<form>
+											<div class="card-body p-4">
+												<div class="row g-3">
+													<div class="col-md-6">
+														<label class="form-label" for="exEmail">Email</label>
+														<input class="form-control" id="exEmail" placeholder="you@example.com" type="email" />
+														<div class="form-text">We'll never share your email.</div>
+													</div>
+													<div class="col-md-6">
+														<label class="form-label" for="exPassword">Password</label>
+														<input class="form-control" id="exPassword" placeholder="••••••••" type="password" />
+													</div>
+													<div class="col-md-6">
+														<label class="form-label" for="exSelect">Select</label>
+														<select class="form-select" id="exSelect">
+															<option selected>Choose...</option>
+															<option>Option A</option>
+															<option>Option B</option>
+															<option>Option C</option>
+														</select>
+													</div>
+													<div class="col-md-6">
+														<label class="form-label" for="exInputGroup">Username</label>
+														<div class="input-group">
+															<span class="input-group-text" id="igPre">@</span>
+															<input type="text" class="form-control" id="exInputGroup" placeholder="handle" aria-describedby="igPre" />
+														</div>
+													</div>
+													<div class="col-12">
+														<label class="form-label" for="exTextarea">Message</label>
+														<textarea class="form-control" id="exTextarea" placeholder="Say hello..." rows="3"></textarea>
+													</div>
+													<div class="col-md-6">
+														<div class="form-check mb-2">
+															<input class="form-check-input" type="checkbox" id="exCheck1" checked>
+															<label class="form-check-label" for="exCheck1">Remember me</label>
+														</div>
+														<div class="form-check form-switch">
+															<input class="form-check-input" type="checkbox" id="exSwitch">
+															<label class="form-check-label" for="exSwitch">Enable updates</label>
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-check form-check-inline">
+															<input class="form-check-input" type="radio" name="exRadios" id="exRadio1" checked>
+															<label class="form-check-label" for="exRadio1">Option 1</label>
+														</div>
+														<div class="form-check form-check-inline">
+															<input class="form-check-input" type="radio" name="exRadios" id="exRadio2">
+															<label class="form-check-label" for="exRadio2">Option 2</label>
+														</div>
+													</div>
+                            <div class="col-md-6">
+                              <label for="exRange" class="form-label">Range</label>
+                              <input type="range" class="form-range" id="exRange">
+                            </div>
+                            <div class="col-md-6">
+                              <label for="exFile" class="form-label">File input</label>
+                              <input class="form-control" type="file" id="exFile">
+                            </div>
+                          </div>
+                          <!-- Validation States (static examples) -->
+                          <div class="row g-3 mt-4">
+                            <div class="col-md-6">
+                              <label class="form-label" for="valValid">Valid Text</label>
+                              <input type="text" class="form-control is-valid" id="valValid" value="Looks good!"/>
+                              <div class="valid-feedback">Looks good!</div>
+                            </div>
+                            <div class="col-md-6">
+                              <label class="form-label" for="valInvalid">Invalid Text</label>
+                              <input type="text" class="form-control is-invalid" id="valInvalid" value="Invalid value"/>
+                              <div class="invalid-feedback">Please provide a valid value.</div>
+                            </div>
+                            <div class="col-md-6">
+                              <label class="form-label" for="valSelect">Select (Invalid)</label>
+                              <select class="form-select is-invalid" id="valSelect">
+                                <option selected>Choose...</option>
+                                <option>Option A</option>
+                                <option>Option B</option>
+                              </select>
+                              <div class="invalid-feedback">Please select an option.</div>
+                            </div>
+                            <div class="col-md-6">
+                              <label class="form-label" for="valEmail">Email (Valid)</label>
+                              <div class="input-group has-validation">
+                                <span class="input-group-text">@</span>
+                                <input type="email" class="form-control is-valid" id="valEmail" value="you@example.com"/>
+                                <div class="valid-feedback">Email looks good.</div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div class="card-footer d-flex justify-content-between">
+                          <button class="btn btn-secondary">Cancel</button>
+                          <button class="btn btn-primary px-5">Submit</button>
+                        </div>
+                      </form>
+                    </div>
+                  </section>
+								
+								<!-- Badges & Chips -->
+								<section class="my-5" id="badges">
+									<h1 class="display-4 mt-5 "> Badges &amp; Chips </h1>
+									<div class="card bg-glass">
+										<div class="neon-accent-line"></div>
+										<div class="card-body">
+											<h5>Chips</h5>
+											<div class="d-flex flex-wrap gap-3 align-items-center mb-4">
+												<span class="neon-chip"> Standard Chip </span>
+												<span class="neon-chip neon-chip-rotating"> Rotating Border </span>
+											</div>
+											<h5>Badges</h5>
+											<div class="d-flex flex-wrap gap-3 align-items-center">
+												<span class="badge badge-neon"> Neon Badge </span>
+												<span class="badge bg-success"> Success Badge </span>
+												<span class="badge bg-info"> Info Badge </span>
+												<span class="badge bg-warning text-dark"> Warning Badge </span>
+												<span class="badge bg-danger"> Danger Badge </span>
+											</div>
+											
+										</div>
+									</div>
+								</section>
+								<!-- Alerts -->
+								<section class="my-5" id="alerts">
+									<h1 class="display-4"> Alerts </h1>
+									<div class="card bg-glass">
+										<div class="neon-accent-line"></div>
+										<div class="card-body">
+											<p class="mb-3"> Opt-in glass alerts using Bootstrap-friendly variables. Add <code> alert-neon </code> to any standard <code> .alert </code> . </p>
+											<div class="d-flex flex-column gap-3">
+												<div class="alert alert-neon alert-success" role="alert">
+													<i class="fas fa-check-circle me-2"></i> Success! Your action completed successfully.
+												</div>
+												<div class="alert alert-neon alert-info" role="alert">
+													<i class="fas fa-info-circle me-2"></i> Heads up! Informational message with a cool tint.
+												</div>
+												<div class="alert alert-neon alert-warning alert-dismissible" role="alert">
+													<i class="fas fa-exclamation-triangle me-2"></i> Caution! Something needs your attention. <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+												</div>
+												<div class="alert alert-neon alert-danger alert-dismissible" role="alert">
+													<i class="fas fa-times-circle me-2"></i> Error! Something went wrong. <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+												</div>
+											</div>
+											
+										</div>
+									</div>
+								</section>
+								<!-- Tabs -->
+								<section class="my-5" id="tabs">
+									<h1 class="display-4"> Tabs </h1>
+									<div class="card bg-glass">
+										<div class="neon-accent-line"></div>
+										<div class="card-body">
+											<p class="mb-3"> Use <code> nav-tabs-neon </code> with Bootstrap tabs for a subtle glass look. </p>
+											<ul class="nav nav-tabs nav-tabs-neon" role="tablist">
+												<li class="nav-item" role="presentation">
+													<button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-home" type="button" role="tab"> Home </button>
+												</li>
+												<li class="nav-item" role="presentation">
+													<button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-profile" type="button" role="tab"> Profile </button>
+												</li>
+												<li class="nav-item" role="presentation">
+													<button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-contact" type="button" role="tab"> Contact </button>
+												</li>
+											</ul>
+											<div class="tab-content border-start border-end border-bottom rounded-bottom p-3" style="border-color: var(--neon-glass-border) !important;">
+												<div class="tab-pane fade show active" id="tab-home" role="tabpanel">
+													<p class="mb-0"> This is the Home tab content. </p>
+												</div>
+												<div class="tab-pane fade" id="tab-profile" role="tabpanel">
+													<p class="mb-0"> This is the Profile tab content. </p>
+												</div>
+												<div class="tab-pane fade" id="tab-contact" role="tabpanel">
+													<p class="mb-0"> This is the Contact tab content. </p>
+												</div>
+											</div>
+											
+										</div>
+									</div>
+								</section>
+								<!-- Toasts -->
+								<section class="my-5" id="toasts">
+									<h1 class="display-4"> Toasts </h1>
+									<div class="card bg-glass">
+										<div class="neon-accent-line"></div>
+										<div class="card-body">
+											<p class="mb-3"> Use <code> toast-neon </code> with standard Bootstrap toasts for a glass look. Pick a position and trigger a context. </p>
+											<div class="row g-3 align-items-end mb-3">
+												<div class="col-md-4">
+													<label for="toastPosition" class="form-label"> Position </label>
+													<select id="toastPosition" class="form-select">
+														<option value="top-end" selected> Top Right </option>
+														<option value="top-start"> Top Left </option>
+														<option value="bottom-end"> Bottom Right </option>
+														<option value="bottom-start"> Bottom Left </option>
+													</select>
+												</div>
+												<div class="col-md-8 d-flex flex-wrap gap-2">
+													<button class="btn btn-success" id="btnToastSuccess"> Success </button>
+													<button class="btn btn-info" id="btnToastInfo"> Info </button>
+													<button class="btn btn-warning" id="btnToastWarning"> Warning </button>
+													<button class="btn btn-danger" id="btnToastDanger"> Danger </button>
+												</div>
+											</div>
+											
+											
+										</div>
+									</div>
+									<!-- Toast containers for each corner -->
+									<div id="toastTopEnd" class="toast-container position-fixed top-0 end-0 p-3" style="z-index:1080"></div>
+									<div id="toastTopStart" class="toast-container position-fixed top-0 start-0 p-3" style="z-index:1080"></div>
+									<div id="toastBottomEnd" class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index:1080"></div>
+									<div id="toastBottomStart" class="toast-container position-fixed bottom-0 start-0 p-3" style="z-index:1080"></div>
+									<!-- Hidden template for cloning -->
+									<div id="toastTemplate" class="toast toast-neon d-none" role="alert" aria-live="assertive" aria-atomic="true">
+										<div class="toast-header">
+											<i class="fas me-2"></i>
+											<strong class="me-auto"> Neon Glass </strong>
+											<small> just now </small>
+											<button type="button" class="btn-close ms-2 mb-1" data-bs-dismiss="toast" aria-label="Close"></button>
+										</div>
+										<div class="toast-body"> This is a neon toast. </div>
+									</div>
+								</section>
+								<!-- Forms Section -->
+								<!-- forms section moved earlier; remove duplicate -->
+								<!-- Progress Bars -->
+								<!-- Tabs-alt section removed to avoid duplication -->
+								<!-- end tabs-alt -->
+								<!-- Tables Section (moved before pagination/modals to match TOC) -->
+								<section class="my-5" id="tables">
+									<h1 class="display-4"> Tables </h1>
+									<div class="card bg-glass">
+										<div class="neon-accent-line"></div>
+										<div class="card-body">
+											<div class="table-responsive table-neon mb-3">
+												<table class="table table-striped table-hover table-bordered align-middle mb-0">
+													<thead>
+														<tr>
+															<th scope="col">#</th>
+															<th scope="col">Name</th>
+															<th scope="col">Status</th>
+															<th scope="col">Amount</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr>
+															<th scope="row">1</th>
+															<td>Alpha</td>
+															<td>
+																<span class="badge bg-success">Paid</span>
+															</td>
+															<td>$120.00</td>
+														</tr>
+														<tr>
+															<th scope="row">2</th>
+															<td>Beta</td>
+															<td>
+																<span class="badge bg-warning text-dark">Pending</span>
+															</td>
+															<td>$75.00</td>
+														</tr>
+														<tr>
+															<th scope="row">3</th>
+															<td>Gamma</td>
+															<td>
+																<span class="badge bg-danger">Failed</span>
+															</td>
+															<td>$32.50</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+											
+										</div>
+									</div>
+								</section>
+								<!-- close components wrapper after last component subsection -->
+							</section>
+							<!-- tables moved earlier -->
+							<!-- Pagination Section -->
+							<section class="my-5" id="pagination">
+								<h1 class="display-4"> Pagination </h1>
+								<div class="card bg-glass">
+									<div class="neon-accent-line"></div>
+									<div class="card-body">
+										<nav aria-label="Neon pagination example">
+											<ul class="pagination justify-content-center">
+												<li class="page-item disabled">
+													<a class="page-link" href="#" tabindex="-1">Previous</a>
+												</li>
+												<li class="page-item">
+													<a class="page-link" href="#">1</a>
+												</li>
+												<li class="page-item active" aria-current="page">
+													<a class="page-link" href="#">2</a>
+												</li>
+												<li class="page-item">
+													<a class="page-link" href="#">3</a>
+												</li>
+												<li class="page-item">
+													<a class="page-link" href="#">Next</a>
+												</li>
+											</ul>
+										</nav>
+										
+									</div>
+								</div>
+							</section>
+							<!-- Modals Section (moved after pagination to match TOC) -->
+							<section class="my-5" id="modals">
+								<h1 class="display-4">Modals</h1>
+								<div class="card bg-glass">
+									<div class="neon-accent-line"></div>
+									<div class="card-body">
+										<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#demoModal">Launch Neon Modal</button>
+										<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#demoModal2">Launch Neon Modal Side Panel</button>
+										
+										
+									</div>
+								</div>
+								<div class="modal modal-lg fade" id="demoModal" tabindex="-1" aria-hidden="true">
+											<div class="modal-dialog modal-dialog-centered">
+												<div class="modal-content">
+													<div class="neon-accent-line"></div>
+													<div class="modal-header">
+														
+
+														<h5 class="modal-title fs-3">Neon Glass Modal</h5>
+														<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+													</div>
+													<div class="modal-body">
+														<p class="mb-0">Glassmorphism surface, neon border glow, and themed controls.</p>
+													</div>
+													<div class="modal-footer">
+														<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+														<button type="button" class="btn btn-primary">Confirm</button>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="modal modal-lg fade" id="demoModal2" tabindex="-1" aria-hidden="true">
+											<div class="modal-dialog side-panel modal-dialog-centered">
+												<div class="modal-content">
+													<div class="neon-accent-line"></div>
+													<div class="modal-header">
+														<h5 class="modal-title fs-3">Neon Glass Modal</h5>
+														<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+													</div>
+													<div class="modal-body">
+														<p class="mb-0">Glassmorphism surface, neon border glow, and themed controls.</p>
+													</div>
+													<div class="modal-footer">
+														<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+														<button type="button" class="btn btn-primary">Confirm</button>
+													</div>
+												</div>
+											</div>
+										</div>
+							</section>
+							<!-- Progress Bars -->
+							<section class="my-5" id="progress">
+								<h1 class="display-4"> Progress Bars </h1>
+								<div class="card bg-glass">
+									<div class="neon-accent-line"></div>
+									<div class="card-body">
+										<div class="mb-3">
+											<label class="form-label"> Download Progress </label>
+											<div class="progress" style="height: 20px;">
+												<div class="progress-bar" style="width: 75%"></div>
+											</div>
+										</div>
+										<div class="mb-3">
+											<label class="form-label"> Upload Progress </label>
+											<div class="progress" style="height: 15px;">
+												<div class="progress-bar" style="width: 45%"></div>
+											</div>
+										</div>
+										<div class="mb-3">
+											<label class="form-label"> Processing </label>
+											<div class="progress" style="height: 25px;">
+												<div class="progress-bar" style="width: 90%"></div>
+											</div>
+										</div>
+										
+									</div>
+								</div>
+							</section>
+							
+							<!-- Utility Classes -->
+							<section class="my-5" id="utilities">
+								<h1 class="display-4"> Utility Classes </h1>
+								<div class="card bg-glass">
+									<div class="neon-accent-line"></div>
+									<div class="card-body">
+										<section class="mb-5" id="background-utilities">
+											<h4> Background Utilities </h4>
+
+											<div class="bg-neon-glass my-3 p-3 py-3 text-white rounded-neon text-center">
+												<code class="text-white"> .bg-neon-glass </code>
+											</div>
+											<div class="bg-neon-gradient my-3 p-3 py-3 text-white rounded-neon text-center">
+												<code class="text-white"> .bg-neon-gradient </code>
+											</div>
+											<div class="bg-neon-blue-purple my-3 p-3 py-3 text-white rounded-neon text-center">
+												<code class="text-white"> .bg-neon-blue-purple </code>
+											</div>
+											<div class="bg-neon-night my-3 p-3 py-4 rounded-neon text-center border" style="border-color: rgba(255,255,255,0.2) !important;">
+												<code style="color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.8);"> .bg-neon-night </code>
+											</div>
+										</section>
+										<section class="mb-5" id="glow-effects">
+											<h4 class="mb-3 mt-5"> Glow Effects </h4>
+											<div class="row g-3">
+												<div class="col-12">
+													<div class="card my-3 neon-glow-blue p-3 text-center">
+														<code class="text-neon-blue"> .neon-glow-blue </code>
+													</div>
+													<div class="card my-3 neon-glow-purple p-3 text-center">
+														<code class="text-neon-purple"> .neon-glow-purple </code>
+													</div>
+													<div class="card my-3 neon-glow-pink p-3 text-center">
+														<code class="text-neon-pink"> .neon-glow-pink </code>
+													</div>
+													<div class="card my-3 neon-glow-cyan p-3 text-center">
+														<code class="text-neon-cyan"> .neon-glow-cyan </code>
+													</div>
+												</div>
+												
+											</div>
+										</section>
+										
+										<section class="mb-5" id="text-colors">
+											<h4 class="mb-3 mt-4"> Text Colors </h4>
+										<div class="card card-solid">
+												<div class="card-body">
+													<div class="row g-3">
+														<div class="col-md-3">
+															<p class="mb-0 text-neon-blue"> .text-neon-blue </p>
+														</div>
+														<div class="col-md-3">
+															<p class="mb-0 text-neon-purple"> .text-neon-purple </p>
+														</div>
+														<div class="col-md-3">
+															<p class="mb-0 text-neon-pink"> .text-neon-pink </p>
+														</div>
+														<div class="col-md-3">
+															<p class="mb-0 text-neon-cyan"> .text-neon-cyan </p>
+														</div>
+													</div>
+												</div>
+											</div>
+										</section>
+										<section class="mt-5" id="text-glow-utilities">
+											<h4> Text Glow</h4>
+											
+											<div class="row g-4">
+												<div class="col-12">
+													<div class="card card-solid">
+														
+															<div class="px-4 py-2 d-flex justify-content-between border-bottom align-items-center"><h4 class="my-2 py-0 text-neon-cyan-adv"> Cyan Flicker </h4> <code class="text-white d-inline-block ms-5">.text-neon-cyan-adv</code></div>
+															<div class="px-4 py-2 d-flex justify-content-between border-bottom align-items-center"><h4 class="my-2 py-0 text-neon-pink-adv"> Pink Pulse </h4> <code class="text-white d-inline-block ms-5">.text-neon-pink-adv</code></div>
+															<div class="px-4 py-2 d-flex justify-content-between border-bottom align-items-center"><h4 class="my-2 py-0 text-neon-lime-adv"> Lime Jitter </h4> <code class="text-white d-inline-block ms-5">.text-neon-lime-adv</code></div>
+															<div class="px-4 py-2 d-flex justify-content-between border-bottom align-items-center"><h4 class="my-2 py-0 text-neon-blue-adv"> Electric Blue Blink </h4> <code class="text-white d-inline-block ms-5">.text-neon-blue-adv</code></div>
+															<div class="px-4 py-2 d-flex justify-content-between border-bottom align-items-center"><h4 class="my-2 py-0 text-neon-magenta-adv"> Magenta Glow Cycle </h4> <code class="text-white d-inline-block ms-5">.text-neon-magenta-adv</code></div>
+															<div class="px-4 py-2 d-flex justify-content-between border-bottom align-items-center"><h4 class="my-2 py-0 text-neon-amber-adv"> Amber Pulse </h4> <code class="text-white d-inline-block ms-5">.text-neon-amber-adv</code></div>
+															<div class="px-4 py-2 d-flex justify-content-between border-bottom align-items-center"><h4 class="my-2 py-0 text-neon-toxic-adv"> Toxic Green Flicker </h4> <code class="text-white d-inline-block ms-5">.text-neon-toxic-adv</code></div>
+															<div class="px-4 py-2 d-flex justify-content-between border-bottom align-items-center"><h4 class="my-2 py-0 text-neon-red-adv"> Hot Red Flicker </h4> <code class="text-white d-inline-block ms-5">.text-neon-red-adv</code></div>
+															<div class="px-4 py-2 d-flex justify-content-between align-items-center"><h4 class="my-2 py-0 text-neon-rainbow-adv"> Rainbow Neon </h4> <code class="text-white d-inline-block ms-5">.text-neon-rainbow-adv</code></div>
+														
+													</div>
+												</div>
+												
+											</div>
+										</section>
+									</div>
+								</div>
+							</section>
+							
+							
+							<!-- Advanced Features -->
+							<section class="my-5" id="advanced">
+								<h1 class="display-4 mb-4"> Advanced Features </h1>
+								<div class="card bg-glass">
+									<div class="card-body">
+										<!-- Lens Distortion Section -->
+										<section class="my-5" id="lens-effects">
+											
+											<div class="card mb-4">
+												<div class="card-header">
+														<h4>GLASS REFLECTIONS</h4>
+													</div>
+												<div class="card-body">
+													
+                                        <p class="mb-3"> The lens distortion system uses html2canvas-pro to capture actual page content behind glass elements, creating realistic magnification and edge distortion effects that mimic beveled glass optics. </p>
+												</div>
+											
+												<div class="card-header">
+													<h5 class="mb-0 text-center">
+														<i class="fas fa-sliders-h me-2"></i> Live Controls
+													</h5>
+												</div>
+												<div class="card-body">
+													<div class="row g-3">
+														<div class="col-md-4">
+															<label class="form-label">
+																<i class="fas fa-search-plus me-1"></i> Magnification: <span class="" id="magValue"> 1 </span> x </label>
+															<input class="form-range" id="magnification" max="1.3" min="0.5" step="0.05" type="range" value="1" />
+														</div>
+														<div class="col-md-4">
+															<label class="form-label">
+																<i class="fas fa-adjust me-1"></i> Edge Distortion: <span class="" id="distValue"> 1 </span>
+															</label>
+															<input class="form-range" id="distortion" max="1" min="0" step="0.1" type="range" value="1" />
+														</div>
+														<div class="col-md-4">
+															<div class="form-check form-switch mt-4">
+																<input checked="" class="form-check-input" id="enableLens" type="checkbox" />
+																<label class="form-check-label" for="enableLens">
+																	<i class="fas fa-power-off me-1"></i> Enable Lens Effects </label>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<!-- Interactive Demo -->
+											<div class="bg-neon-glass lens-enabled p-4 rounded-5 position-relative text-center" style="min-height: 200px;" data-lens-specular-enabled="true" data-lens-specular-top="18" data-lens-specular-height="76" data-lens-specular-left="20" data-lens-specular-right="16" data-lens-specular-strength="0.3" data-lens-specular-radius="14" data-lens-specular-gamma="0.6">
+												<h4 class="mb-3">
+													<i class="fas fa-flask me-2"></i> Interactive Demo
+												</h4>
+												<p class="mb-3"> This element captures, blurs, warps and magnifies the actual page content. The background shows through with realistic edge distortion. </p>
+												<span class="badge badge-neon">
+													<i class="fas fa-camera me-1"></i> Real DOM Capture </span>
+												<canvas class="lens-canvas"></canvas>
+											</div>
+										</section>
+										<div id="dashboard"></div>
+										<h4> Dashboard Cards </h4>
+										<div class="row g-4 mb-5">
+											<div class="col-md-4">
+												<div class="card card-hero">
+													<div class="neon-accent-line"></div>
+													<div class="card-body text-center">
+														<div class="position-absolute top-0 start-50 translate-middle-x mt-3 neon-ripple-gradient-pink"></div>
+														<span class="neon-chip neon-chip-rotating d-inline-block mt-3">
+															<i class="fas fa-users text-neon-cyan-glow fa-2x m-2"></i>
+														</span>
+														<h5 class="d-block fs-2 card-title mt-4 mb-0"> Users </h5>
+														<h5 class="d-block fs-1 my-1"> 1,234 </h5>
+														<span class="badge badge-neon"> +12% this month </span>
+													</div>
+												</div>
+											</div>
+											<div class="col-md-4">
+												<div class="card card-hero">
+													<div class="neon-accent-line"></div>
+													<div class="card-body text-center">
+
+														<div class="position-absolute top-0 start-50 translate-middle-x mt-3 neon-ripple-gradient-blue-green"></div>
+														<span class="neon-chip neon-chip-rotating d-inline-block mt-3">
+															<i class="fas fa-chart-line text-neon-cyan-glow fa-2x m-2"></i>
+														</span>
+														<h5 class="d-block fs-2 card-title mt-4 mb-0"> Revenue </h5>
+														<h5 class="d-block fs-1 my-1"> $45.6K  </h5>
+
+														
+														<span class="badge bg-success"> +8% this month </span>
+													</div>
+												</div>
+											</div>
+											<div class="col-md-4">
+												<div class="card card-hero">
+													<div class="neon-accent-line"></div>
+													<div class="card-body text-center">
+														<div class="position-absolute top-0 start-50 translate-middle-x mt-3 neon-ripple-gradient-pink"></div>
+														<span class="neon-chip neon-chip-rotating d-inline-block mt-3">
+															<i class="fas fa-shopping-cart text-neon-cyan-glow fa-2x m-2"></i>
+														</span>
+														<h5 class="d-block fs-2 card-title mt-4 mb-0"> Orders </h5>
+														<h5 class="d-block fs-1 my-1"> 856 </h5>
+														
+														<span class="badge bg-warning text-dark"> +5% this month </span>
+													</div>
+												</div>
+											</div>
+										</div>
+										<h4 class="mb-3 mt-5 text-center d-block"> Payment Gateway Interface </h4>
+										<div class="card card-hero" style="max-width: 500px; margin: 0 auto;">
+											<div class="neon-accent-line"></div>
+											<div class="card-header">
+												<h5 class="mb-0 d-flex align-items-center">
+													<i class="fab fa-stripe me-2"></i> Stripe Gateway <span class="badge bg-success ms-auto"> Active </span>
+												</h5>
+											</div>
+											<div class="card-body">
+												<div class="row text-center mb-3">
+													<div class="col-4">
+														<div class="text-muted small"> ENVIRONMENT </div>
+														<span class="neon-chip"> Production </span>
+													</div>
+													<div class="col-4">
+														<div class="text-muted small"> STATUS </div>
+														<span class="neon-chip neon-chip-rotating"> Connected </span>
+													</div>
+													<div class="col-4">
+														<div class="text-muted small"> LAST USED </div>
+														<div class="fw-semibold"> 2 hours ago </div>
+													</div>
+												</div>
+												<div class="row text-center mb-3">
+													<div class="col-4">
+														<div class="text-muted small"> TOTAL </div>
+														<div class="h4 mb-0"> 1,234 </div>
+													</div>
+													<div class="col-4">
+														<div class="text-success small"> APPROVED </div>
+														<div class="h4 mb-0 text-success"> 1,180 </div>
+													</div>
+													<div class="col-4">
+														<div class="text-danger small"> DECLINED </div>
+														<div class="h4 mb-0 text-danger"> 54 </div>
+													</div>
+												</div>
+											</div>
+											<div class="card-footer bg-transparent">
+												<div class="d-flex gap-2">
+													<button class="btn btn-primary flex-fill">
+														<i class="fas fa-eye me-2"></i> View Details </button>
+													<button class="btn btn-outline-light flex-fill">
+														<i class="fas fa-cog me-2"></i> Configure </button>
+												</div>
+											</div>
+										</div>
+										<!-- Close advanced before Customization to make it top-level -->
+									</div>
+								</div>
+							</section>
+							<!-- Customization -->
+							<section class="my-5" id="customization">
+								<h2 class="mb-3"> Customization </h2>
+								<div class="card bg-glass">
+									<div class="neon-accent-line"></div>
+									<div class="card-body">
+										<p class="mb-2"> Override CSS variables in a separate stylesheet or a scoped wrapper. </p>
+										<p class="mb-2"> Create new components using the <code> .neon-* </code> prefix (e.g., <code> .neon-card </code> ). </p>
+										<h5 class="mt-4"> Quick Theming via --bs-* Overrides </h5>
+										
+									</div>
+								</div>
+							</section>
+							<!-- Browser Support -->
+							<section class="my-5" id="browser-support">
+								<h2 class="mb-3"> Browser Support </h2>
+								<div class="card bg-glass">
+									<div class="neon-accent-line"></div>
+									<div class="card-body">
+										<ul>
+											<li> Latest Chrome, Firefox, and Safari. </li>
+											<li> Requires <code> backdrop-filter </code> for glass effects; gracefully degrades without it. </li>
+											<li> Prefer SVG and compressed images for performance. </li>
+										</ul>
+									</div>
+								</div>
+							</section>
+
+							<!-- Browser Support -->
+							<section class="my-5" id="inspirations">
+								<h2 class="mb-3"> Browser Support </h2>
+								<div class="card bg-glass">
+									<div class="neon-accent-line"></div>
+									<div class="card-body">
+										<ul>
+											<li> Latest Chrome, Firefox, and Safari. </li>
+											<li> Requires <code> backdrop-filter </code> for glass effects; gracefully degrades without it. </li>
+											<li> Prefer SVG and compressed images for performance. </li>
+										</ul>
+									</div>
+								</div>
+							</section>
+					</div>
+				</div>
+			</div>
+		</div>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/html2canvas-pro@1.5.11/dist/html2canvas-pro.min.js"></script>
+            <script src="js/lens.js"></script>
+		<script>
+			// Demo: neon toast variants
+			document.addEventListener('DOMContentLoaded', function() {
+				if (!(window.bootstrap && bootstrap.Toast)) return;
+				var posSelect = document.getElementById('toastPosition');
+				var template = document.getElementById('toastTemplate');
+
+				function containerFor(position) {
+					switch (position) {
+						case 'top-start':
+							return document.getElementById('toastTopStart');
+						case 'bottom-end':
+							return document.getElementById('toastBottomEnd');
+						case 'bottom-start':
+							return document.getElementById('toastBottomStart');
+						case 'top-end':
+						default:
+							return document.getElementById('toastTopEnd');
+					}
+				}
+
+				function iconClass(type) {
+					return {
+						success: 'fa-check-circle',
+						info: 'fa-info-circle',
+						warning: 'fa-exclamation-triangle',
+						danger: 'fa-times-circle'
+					} [type] || 'fa-bell';
+				}
+
+				function showToast(type) {
+					var clone = template.cloneNode(true);
+					clone.classList.remove('d-none');
+					clone.classList.add('toast-neon');
+					
+					// context class
+					clone.classList.remove('toast-success', 'toast-info', 'toast-warning', 'toast-danger');
+					clone.classList.add('toast-' + type);
+					
+					// icon
+					var icon = clone.querySelector('.toast-header i');
+					if (icon) icon.className = 'fas me-2 ' + iconClass(type);
+					
+					// message
+					var body = clone.querySelector('.toast-body');
+					if (body) body.textContent = 'Sample ' + type + ' toast message.';
+					
+					// append and show
+					var container = containerFor(posSelect.value);
+					(container || document.body).appendChild(clone);
+					var toast = new bootstrap.Toast(clone);
+					clone.addEventListener('hidden.bs.toast', () => clone.remove() );
+					toast.show();
+				}
+				var map = {
+					btnToastSuccess: 'success',
+					btnToastInfo: 'info',
+					btnToastWarning: 'warning',
+					btnToastDanger: 'danger'
+				};
+				Object.keys(map).forEach(function(id) {
+					var el = document.getElementById(id);
+					if (el) el.addEventListener('click', () => showToast(map[id]) );
+				});
+			});
+
+			/*import easingUtils from "https://esm.sh/easing-utils";*/
+
+class AHole extends HTMLElement {
+  /**
+   * Init
+   */
+  connectedCallback() {
+    // Elements
+    this.canvas = this.querySelector(".js-canvas");
+    this.ctx = this.canvas.getContext("2d");
+
+    this.discs = [];
+    this.lines = [];
+
+    // Init
+    this.setSize();
+    this.setDiscs();
+    this.setLines();
+    this.setParticles();
+
+    this.bindEvents();
+
+    // RAF
+    requestAnimationFrame(this.tick.bind(this));
+  }
+
+  /**
+   * Bind events
+   */
+  bindEvents() {
+    window.addEventListener("resize", this.onResize.bind(this));
+  }
+
+  /**
+   * Resize handler
+   */
+  onResize() {
+    this.setSize();
+    this.setDiscs();
+    this.setLines();
+    this.setParticles();
+  }
+
+  /**
+   * Set size
+   */
+  setSize() {
+    this.rect = this.getBoundingClientRect();
+
+    this.render = {
+      width: this.rect.width,
+      height: this.rect.height,
+      dpi: window.devicePixelRatio
+    };
+
+    this.canvas.width = this.render.width * this.render.dpi;
+    this.canvas.height = this.render.height * this.render.dpi;
+  }
+
+  /**
+   * Set discs
+   */
+  setDiscs() {
+    const { width, height } = this.rect;
+
+    this.discs = [];
+
+    this.startDisc = {
+      x: width * 0.5,
+      y: height * 0.45,
+      w: width * 0.75,
+      h: height * 0.7
+    };
+
+    this.endDisc = {
+      x: width * 0.5,
+      y: height * 0.95,
+      w: 0,
+      h: 0
+    };
+
+    const totalDiscs = 100;
+
+    let prevBottom = height;
+    this.clip = {};
+
+    for (let i = 0; i < totalDiscs; i++) {
+      const p = i / totalDiscs;
+
+      const disc = this.tweenDisc({
+        p
+      });
+
+      const bottom = disc.y + disc.h;
+
+      if (bottom <= prevBottom) {
+        this.clip = {
+          disc: { ...disc },
+          i
+        };
+      }
+
+      prevBottom = bottom;
+
+      this.discs.push(disc);
+    }
+
+    this.clip.path = new Path2D();
+    this.clip.path.ellipse(
+      this.clip.disc.x,
+      this.clip.disc.y,
+      this.clip.disc.w,
+      this.clip.disc.h,
+      0,
+      0,
+      Math.PI * 2
+    );
+    this.clip.path.rect(
+      this.clip.disc.x - this.clip.disc.w,
+      0,
+      this.clip.disc.w * 2,
+      this.clip.disc.y
+    );
+  }
+
+  /**
+   * Set lines
+   */
+  setLines() {
+    const { width, height } = this.rect;
+
+    this.lines = [];
+
+    const totalLines = 100;
+    const linesAngle = (Math.PI * 2) / totalLines;
+
+    for (let i = 0; i < totalLines; i++) {
+      this.lines.push([]);
+    }
+
+    this.discs.forEach((disc) => {
+      for (let i = 0; i < totalLines; i++) {
+        const angle = i * linesAngle;
+
+        const p = {
+          x: disc.x + Math.cos(angle) * disc.w,
+          y: disc.y + Math.sin(angle) * disc.h
+        };
+
+        this.lines[i].push(p);
+      }
+    });
+
+    this.linesCanvas = new OffscreenCanvas(width, height);
+    const ctx = this.linesCanvas.getContext("2d");
+
+    this.lines.forEach((line, i) => {
+      ctx.save();
+
+      let lineIsIn = false;
+      line.forEach((p1, j) => {
+        if (j === 0) {
+          return;
+        }
+
+        const p0 = line[j - 1];
+
+        if (
+          !lineIsIn &&
+          (ctx.isPointInPath(this.clip.path, p1.x, p1.y) ||
+            ctx.isPointInStroke(this.clip.path, p1.x, p1.y))
+        ) {
+          lineIsIn = true;
+        } else if (lineIsIn) {
+          ctx.clip(this.clip.path);
+        }
+
+        ctx.beginPath();
+
+        ctx.moveTo(p0.x, p0.y);
+        ctx.lineTo(p1.x, p1.y);
+
+        ctx.strokeStyle = "#444";
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        ctx.closePath();
+      });
+
+      ctx.restore();
+    });
+
+    this.linesCtx = ctx;
+  }
+
+  /**
+   * Set particles
+   */
+  setParticles() {
+    const { width, height } = this.rect;
+
+    this.particles = [];
+
+    this.particleArea = {
+      sw: this.clip.disc.w * 0.5,
+      ew: this.clip.disc.w * 2,
+      h: height * 0.85
+    };
+    this.particleArea.sx = (width - this.particleArea.sw) / 2;
+    this.particleArea.ex = (width - this.particleArea.ew) / 2;
+
+    const totalParticles = 100;
+
+    for (let i = 0; i < totalParticles; i++) {
+      const particle = this.initParticle(true);
+
+      this.particles.push(particle);
+    }
+  }
+
+  /**
+   * Init particle
+   */
+  initParticle(start = false) {
+    const sx = this.particleArea.sx + this.particleArea.sw * Math.random();
+    const ex = this.particleArea.ex + this.particleArea.ew * Math.random();
+    const dx = ex - sx;
+    const vx = 0.1 + Math.random() * 0.5;
+    const y = start ? this.particleArea.h * Math.random() : this.particleArea.h;
+    const r = 0.5 + Math.random() * 4;
+    const vy = 0.5 + Math.random();
+
+    return {
+      x: sx,
+      sx,
+      dx,
+      y,
+      vy,
+      p: 0,
+      r,
+      c: `rgba(255, 255, 255, ${Math.random()})`
+    };
+  }
+
+  /**
+   * Tween value
+   */
+  tweenValue(start, end, p, ease = false) {
+    const delta = end - start;
+
+    const easeFn =
+      easingUtils[
+        ease ? "ease" + ease.charAt(0).toUpperCase() + ease.slice(1) : "linear"
+      ];
+
+    return start + delta * easeFn(p);
+  }
+
+  /**
+   * Draw discs
+   */
+  drawDiscs() {
+    const { ctx } = this;
+
+    ctx.strokeStyle = "#444";
+    ctx.lineWidth = 2;
+
+    // Outer disc
+    const outerDisc = this.startDisc;
+
+    ctx.beginPath();
+
+    ctx.ellipse(
+      outerDisc.x,
+      outerDisc.y,
+      outerDisc.w,
+      outerDisc.h,
+      0,
+      0,
+      Math.PI * 2
+    );
+    ctx.stroke();
+
+    ctx.closePath();
+
+    // Discs
+    this.discs.forEach((disc, i) => {
+      if (i % 5 !== 0) {
+        return;
+      }
+
+      if (disc.w < this.clip.disc.w - 5) {
+        ctx.save();
+
+        ctx.clip(this.clip.path);
+      }
+
+      ctx.beginPath();
+
+      ctx.ellipse(disc.x, disc.y, disc.w, disc.h, 0, 0, Math.PI * 2);
+      ctx.stroke();
+
+      ctx.closePath();
+
+      if (disc.w < this.clip.disc.w - 5) {
+        ctx.restore();
+      }
+    });
+  }
+
+  /**
+   * Draw lines
+   */
+  drawLines() {
+    const { ctx, linesCanvas } = this;
+
+    ctx.drawImage(linesCanvas, 0, 0);
+  }
+
+  /**
+   * Draw particles
+   */
+  drawParticles() {
+    const { ctx } = this;
+
+    ctx.save();
+
+    ctx.clip(this.clip.path);
+
+    this.particles.forEach((particle) => {
+      ctx.fillStyle = particle.c;
+      ctx.beginPath();
+      ctx.rect(particle.x, particle.y, particle.r, particle.r);
+      ctx.closePath();
+
+      ctx.fill();
+    });
+
+    ctx.restore();
+  }
+
+  /**
+   * Move discs
+   */
+  moveDiscs() {
+    this.discs.forEach((disc) => {
+      disc.p = (disc.p + 0.001) % 1;
+
+      this.tweenDisc(disc);
+    });
+  }
+
+  /**
+   * Move Particles
+   */
+  moveParticles() {
+    this.particles.forEach((particle) => {
+      particle.p = 1 - particle.y / this.particleArea.h;
+      particle.x = particle.sx + particle.dx * particle.p;
+      particle.y -= particle.vy;
+
+      if (particle.y < 0) {
+        particle.y = this.initParticle().y;
+      }
+    });
+  }
+
+  /**
+   * Tween disc
+   */
+  tweenDisc(disc) {
+    disc.x = this.tweenValue(this.startDisc.x, this.endDisc.x, disc.p);
+    disc.y = this.tweenValue(
+      this.startDisc.y,
+      this.endDisc.y,
+      disc.p,
+      "inExpo"
+    );
+
+    disc.w = this.tweenValue(this.startDisc.w, this.endDisc.w, disc.p);
+    disc.h = this.tweenValue(this.startDisc.h, this.endDisc.h, disc.p);
+
+    return disc;
+  }
+
+  /**
+   * Tick
+   */
+  tick(time) {
+    const { ctx } = this;
+
+    ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+    ctx.save();
+    ctx.scale(this.render.dpi, this.render.dpi);
+
+    this.moveDiscs();
+    this.moveParticles();
+
+    this.drawDiscs();
+    this.drawLines();
+    this.drawParticles();
+
+    ctx.restore();
+
+    requestAnimationFrame(this.tick.bind(this));
+  }
+}
+
+class Particle {
+  constructor(x, y, ctx) {}
+
+  move() {}
+
+  draw() {}
+}
+
+customElements.define("a-hole", AHole);
+
+		</script>
+	</body>
+</html>
